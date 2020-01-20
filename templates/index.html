@@ -7,7 +7,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
     <title>Mnist</title>
+
+    <style>
+        canvas {
+            border: 1px;
+            border-color: black;
+            border-style: dashed;
+            margin: 3rem;
+
+        }
+    </style>
 </head>
 
 <body>
@@ -15,10 +27,19 @@
         <h1 class="display-4">MNIST Handwritten Digit Classifier</h1>
         <p class="lead">This is a simple ML web app.</p>
         <hr class="my-4">
-        <p>Basic deployment of machine learning models </p>
     </div>
 
-    {
+    <div class="card text-center" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Draw here</h5>
+            <canvas id="draw" width="128px" height="128px">
+                Your browser doesn't support canvas:(
+            </canvas>
+            <button type="button" class="btn btn-outline-secondary" id="clearcanvas">Clear</button>
+            <button type="button" class="btn btn-secondary" id="predict">Predict</button>
+            
+        </div>
+    </div>
 
 
 
@@ -31,6 +52,58 @@
     </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+
+
+
+    <script>
+        const canvas = document.querySelector('#draw');
+        // could be 3d, if you want to make a video game
+        const ctx = canvas.getContext('2d');
+        canvas.width = 128;
+        canvas.height = 128;
+
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = '#000000';
+
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        function draw(e) {
+            // stop the function if they are not mouse down
+            if (!isDrawing) return;
+            //listen for mouse move event
+            console.log(e);
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        });
+
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mouseout', () => isDrawing = false);
+
+
+        document.getElementById("clearcanvas").onclick = function() {clear()};
+        document.getElementById("predict").onclick = function() {save()};
+
+        function clear() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function save() {
+            canvas.toDataURL("image/jpg");
+        }
     </script>
 </body>
 
