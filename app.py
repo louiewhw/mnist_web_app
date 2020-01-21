@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, redirect, url_for, make_response
 import pickle
 import base64
 import re
@@ -7,25 +7,19 @@ from PIL import Image
 import numpy as np
 
 dt, dt_score = pickle.load(open('DecisionTree.pkl', 'rb'))
-# rf, rf_score = pickle.load(open('RandomForest.pkl', 'rb'))
+rf, rf_score = pickle.load(open('RandomForest.pkl', 'rb'))
 
 svc, svc_score = pickle.load(open('SVC.pkl', 'rb'))
 
 app = Flask(__name__)
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/')
 def index():
-    if request.method == 'POST':
-        svc_predict = get_predict()
-        
-
-    else:
-        svc_predict = '?'
-    return render_template('index.html', dt_prediction=svc_predict)
+    return render_template('index.html', dt_prediction=123)
 
 
-# @app.route("/predict", methods=['POST'])
-def get_predict():
+@app.route("/predict", methods=['POST'])
+def predict():
 
     req = request.get_json()[22:]
     imgdata = base64.b64decode(req)
@@ -34,17 +28,22 @@ def get_predict():
     img = img.resize((28, 28))
     img = np.array(img).reshape(1,784)
 
-    svc_predict = predict(img)
-    print(svc_predict)
-    return svc_predict
-    
+
+    dt_predict = dt.predict(img)[0].tostring()
+    dt_predict = int.from_bytes(dt_predict, 'big')
+
+    svc_predict = svc.predict(img)[0].tostring()
+    svc_predict = int.from_bytes(svc_predict, 'big')
 
 
+    rf_predict = rf.predict(img)[0].tostring()
+    rf_predict = int.from_bytes(rf_predict, 'big')
 
-def predict(arr):
-    svc_predict = svc.predict(arr)
-    
-    return svc_predict
+    res = make_response(jsonify({'dt':dt_predict, 'svc': svc_predict, 'rf': rf_predict}))
+
+    return res
+
+
 
 
 if __name__ == "__main__":
