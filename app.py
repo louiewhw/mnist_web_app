@@ -7,7 +7,7 @@ from PIL import Image
 import numpy as np
 
 dt, dt_score = pickle.load(open('DecisionTree.pkl', 'rb'))
-rf, rf_score = pickle.load(open('RandomForest.pkl', 'rb'))
+# rf, rf_score = pickle.load(open('RandomForest.pkl', 'rb'))
 
 svc, svc_score = pickle.load(open('SVC.pkl', 'rb'))
 
