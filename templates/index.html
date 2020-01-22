@@ -55,10 +55,10 @@
                             Decision Tree <span class="badge badge-light" id='dt'></span>
                             <span class="sr-only">unread messages</span>
                         </button></li>
-                    <li class="list-group-item"><button type="button" class="btn btn-success">
+                    <!-- <li class="list-group-item"><button type="button" class="btn btn-success">
                             Random Forest <span class="badge badge-light" id='rf'></span>
                             <span class="sr-only">unread messages</span>
-                        </button></li>
+                        </button></li> -->
                     <li class="list-group-item"><button type="button" class="btn btn-info">
                             SVC <span class="badge badge-light" id='svc'></span>
                             <span class="sr-only">unread messages</span>
@@ -143,7 +143,7 @@
             ctx.fillRect(0, 0, 128, 128);
             document.getElementById("dt").innerHTML = null;
             document.getElementById("svc").innerHTML = null;
-            document.getElementById("rf").innerHTML = null;
+            // document.getElementById("rf").innerHTML = null;
         };
 
         function save() {
@@ -168,7 +168,7 @@
                         console.log(data.data)
                         document.getElementById("dt").innerHTML = data.dt;
                         document.getElementById("svc").innerHTML = data.svc;
-                        document.getElementById("rf").innerHTML = data.rf;
+                        // document.getElementById("rf").innerHTML = data.rf;
                     })
 
                 })

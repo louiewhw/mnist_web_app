@@ -7,7 +7,7 @@ from PIL import Image
 import numpy as np
 
 dt, dt_score = pickle.load(open('DecisionTree.pkl', 'rb'))
-rf, rf_score = pickle.load(open('RandomForest.pkl', 'rb'))
+# rf, rf_score = pickle.load(open('RandomForest.pkl', 'rb'))
 
 svc, svc_score = pickle.load(open('SVC.pkl', 'rb'))
 
@@ -36,10 +36,10 @@ def predict():
     svc_predict = int.from_bytes(svc_predict, 'big')
 
 
-    rf_predict = rf.predict(img)[0].tostring()
-    rf_predict = int.from_bytes(rf_predict, 'big')
+    # rf_predict = rf.predict(img)[0].tostring()
+    # rf_predict = int.from_bytes(rf_predict, 'big')
 
-    res = make_response(jsonify({'dt':dt_predict, 'svc': svc_predict, 'rf': rf_predict}))
+    res = make_response(jsonify({'dt':dt_predict, 'svc': svc_predict}))
 
     return res
 
